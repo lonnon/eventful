@@ -1,0 +1,6 @@
+- if @page.is_a?(EventPage)
+  %div.clear
+  %table.fieldset
+    - ['event_start', 'event_end'].each do |field|
+      = render :partial => "meta_row", :locals => {:f => self}, :object => {:field => field, :type => "datetime_select"}
+  %br

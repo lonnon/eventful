@@ -10,6 +10,7 @@ unless defined? RADIANT_ROOT
   end
 end
 require "#{RADIANT_ROOT}/spec/spec_helper"
+require 'webrat'
 
 Dataset::Resolver.default << (File.dirname(__FILE__) + "/datasets")
 
@@ -18,6 +19,8 @@ if File.directory?(File.dirname(__FILE__) + "/matchers")
 end
 
 Spec::Runner.configure do |config|
+  config.include Webrat::Matchers, :type => :views
+  
   # config.use_transactional_fixtures = true
   # config.use_instantiated_fixtures  = false
   # config.fixture_path = RAILS_ROOT + '/spec/fixtures'

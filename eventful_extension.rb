@@ -13,7 +13,7 @@ class EventfulExtension < Radiant::Extension
   # end
   
   def activate
-    # admin.tabs.add "Eventful", "/admin/eventful", :after => "Layouts", :visibility => [:all]
+    admin.page.edit.add(:form, 'event_dates', :after => 'edit_extended_metadata')
   end
   
   def deactivate
