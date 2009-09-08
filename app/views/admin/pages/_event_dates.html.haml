@@ -2,5 +2,5 @@
   %div.clear
   %table.fieldset
     - ['event_start', 'event_end'].each do |field|
-      = render :partial => "meta_row", :locals => {:f => self}, :object => {:field => field, :type => "datetime_select"}
+      = render :partial => "event_meta_row", :locals => {:f => self}, :object => {:field => field, :type => "datetime_select", :args => []}
   %br

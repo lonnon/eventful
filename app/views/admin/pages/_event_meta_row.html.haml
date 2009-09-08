@@ -1,0 +1,6 @@
+%tr
+  %th.label
+    %label{:for => "page_#{event_meta_row[:field]}"}
+      = event_meta_row[:label] || event_meta_row[:field].humanize
+  %td.field
+    = f.send(event_meta_row[:type], :page, event_meta_row[:field], *event_meta_row[:args])
