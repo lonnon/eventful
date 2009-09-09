@@ -1,6 +1,25 @@
 - if @page.is_a?(EventPage)
   %div.clear
   %table.fieldset
-    - ['event_start', 'event_end'].each do |field|
-      = render :partial => "event_meta_row", :locals => {:f => self}, :object => {:field => field, :type => "datetime_select", :args => []}
+    %tr#event_start_row
+      %th.label
+        %label{:for => "page_event_start"}
+          Event starts
+      %td.field
+        = datetime_select "page", "event_start"
+    %tr#event_end_row
+      %th.label
+        %label{:for => "page_event_end"}
+          Event ends
+      %td.field
+        = datetime_select "page", "event_end"
+    %tr
+      %th.label
+        %span{:style => "font-weight: normal;"} Event options
+      %td.field
+        = check_box 'page', 'all_day_event'
+        = label 'page', 'all_day_event', "All day event"
+        &nbsp;
+        = check_box 'page', 'no_end_time'
+        = label 'page', 'no_end_time', "No end time"
   %br
