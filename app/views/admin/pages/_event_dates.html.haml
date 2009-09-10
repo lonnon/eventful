@@ -1,18 +1,13 @@
 - if @page.is_a?(EventPage)
   %div.clear
   %table.fieldset
-    %tr#event_start_row
-      %th.label
-        %label{:for => "page_event_start"}
-          Event starts
-      %td.field
-        = datetime_select "page", "event_start"
-    %tr#event_end_row
-      %th.label
-        %label{:for => "page_event_end"}
-          Event ends
-      %td.field
-        = datetime_select "page", "event_end"
+    - if @page.all_day_event
+      = render :partial => "event_start_date_only", :object => @page
+    - elsif @page.no_end_time
+      = render :partial => "event_start_datetime", :object => @page
+    - else
+      = render :partial => "event_start_datetime", :object => @page
+      = render :partial => "event_end_datetime", :object => @page
     %tr
       %th.label
         %span{:style => "font-weight: normal;"} Event options
