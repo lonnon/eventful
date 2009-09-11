@@ -9,6 +9,7 @@
       %td.field
         = check_box 'page', 'all_day_event'
         = label 'page', 'all_day_event', "All day event"
+        = observe_form :edit_page, :url => {:action => :update_event_ui}, :frequency => 0.3, :update => :event_dates_dynamic
         &nbsp;
         = check_box 'page', 'no_end_time'
         = label 'page', 'no_end_time', "No end time"
