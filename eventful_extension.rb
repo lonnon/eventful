@@ -3,17 +3,20 @@
 
 class EventfulExtension < Radiant::Extension
   version "1.0"
-  description "Describe your extension here"
-  url "http://yourwebsite.com/eventful"
+  description "Support for upcoming event pages"
+  url "http://github.com/lonnon/eventful"
   
-  # define_routes do |map|
-  #   map.namespace :admin, :member => { :remove => :get } do |admin|
-  #     admin.resources :eventful
-  #   end
-  # end
+  define_routes do |map|
+    map.with_options(:controller => "admin/pages") do |page|
+      page.update_event_ui "/admin/pages/:id/update_event_ui",
+        :action => 'update_event_ui'
+    end
+  end
   
   def activate
     admin.page.edit.add(:form, 'event_dates', :after => 'edit_extended_metadata')
+    Admin::PagesController.send :include,
+      Eventful::PagesControllerExtensions
   end
   
   def deactivate
