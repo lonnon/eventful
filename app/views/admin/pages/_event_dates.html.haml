@@ -7,10 +7,10 @@
       %th.label
         %span{:style => "font-weight: normal;"} Event options
       %td.field
-        = check_box 'page', 'all_day_event'
+        = check_box 'page', 'all_day_event', {:onclick => remote_function(:update => :event_dates_dynamic, :url => {:action => :update_event_ui, :id => @page.id}, :submit => 'edit_page')}
         = label 'page', 'all_day_event', "All day event"
-        = observe_form :edit_page, :url => {:action => :update_event_ui}, :frequency => 0.3, :update => :event_dates_dynamic
         &nbsp;
-        = check_box 'page', 'no_end_time'
+        = check_box 'page', 'no_end_time', {:onclick => remote_function(:update => :event_dates_dynamic, :url => {:action => :update_event_ui, :id => @page.id}, :submit => 'edit_page')}
         = label 'page', 'no_end_time', "No end time"
   %br
+  %p= link_to_remote "clicky", :url => {:action => :update_event_ui, :id => @page.id}, :update => :event_dates_dynamic
