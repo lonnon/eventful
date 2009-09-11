@@ -13,4 +13,3 @@
         = check_box 'page', 'no_end_time', {:onclick => remote_function(:update => :event_dates_dynamic, :url => {:action => :update_event_ui, :id => @page.id}, :submit => 'edit_page')}
         = label 'page', 'no_end_time', "No end time"
   %br
-  %p= link_to_remote "clicky", :url => {:action => :update_event_ui, :id => @page.id}, :update => :event_dates_dynamic
