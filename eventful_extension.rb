@@ -14,9 +14,11 @@ class EventfulExtension < Radiant::Extension
   end
   
   def activate
-    admin.page.edit.add(:form, 'event_dates', :after => 'edit_extended_metadata')
+    admin.page.edit.add(:form, 'event_dates',
+      :after => 'edit_extended_metadata')
     Admin::PagesController.send :include,
       Eventful::PagesControllerExtensions
+    Page.send :include, EventfulTags
   end
   
   def deactivate
