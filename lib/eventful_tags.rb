@@ -42,11 +42,17 @@ private
     options = {}
     
     by = (attr[:by] || 'event_start').strip
+    order = (attr[:order] || 'asc').strip
     order_string = ''
     if self.attributes.keys.include?(by)
       order_string << by
     else
       raise TagError.new("'by' attribute of 'each' tag must be set to a valid field name")
+    end
+    if order =~ /^(asc|desc)$/i
+      order_string << " #{$1.upcase}"
+    else
+      raise TagError.new(%{'order' attribute of 'each' tag must be set to either "asc" or "desc"})
     end
     options[:order] = order_string
     

@@ -24,7 +24,13 @@ describe 'Eventful Tags' do
   end
   
   describe "<r:events:each order='desc'>" do
-    it "should return future event pages in reverse chronological order"
+    it "should return future event pages in reverse chronological order" do
+      markup = "<r:events:each order='desc'><r:title /> </r:events:each>"
+      
+      expected = "No End Specified Event All-day Event Event 6 Event 5 Event 4 Event 3 Event 2 Normal Event "
+      
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:each limit='3'>" do
