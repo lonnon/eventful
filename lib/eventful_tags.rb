@@ -1,7 +1,10 @@
 module EventfulTags
   include Radiant::Taggable
+  
+  class TagError < StandardError; end
 
   tag 'events' do |tag|
+    tag.locals.children = tag.locals.page.children
     tag.expand
   end
 
@@ -19,17 +22,36 @@ module EventfulTags
     </code></pre>
   }
   tag 'events:each' do |tag|
+    options = events_find_options(tag)
     result = []
-    children = tag.locals.children
-    events = children.find(:all,
-      :conditions => {:class_name => 'EventPage'})
+    events = tag.locals.children.find(:all, options)
     events.each_with_index do |event, i|
       tag.locals.child = event
       tag.locals.page = event
       tag.locals.first_child = i == 0
       tag.locals.last_child = i == events.length - 1
-      results << tag.expand
+      result << tag.expand
     end
     result
+  end
+  
+private
+
+  def events_find_options(tag)
+    attr = tag.attr.symbolize_keys
+    options = {}
+    
+    by = (attr[:by] || 'event_start').strip
+    order_string = ''
+    if self.attributes.keys.include?(by)
+      order_string << by
+    else
+      raise TagError.new("'by' attribute of 'each' tag must be set to a valid field name")
+    end
+    options[:order] = order_string
+    
+    options[:conditions] = "class_name = 'EventPage' AND event_start >= '#{Time.now.to_s(:db)}'"
+    
+    options
   end
 end
