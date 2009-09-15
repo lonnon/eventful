@@ -15,7 +15,7 @@ module EventfulTags
     
     *Usage:*
     
-    <pre><code><r:events:each [offset="number"] [limit="number"] [by="attribute"] [order="asc|desc"]
+    <pre><code><r:events:each [limit="number"] [by="attribute"] [order="asc|desc"]
      [status="draft|reviewed|published|hidden|all"]>
      ...
     </r:children:each>
