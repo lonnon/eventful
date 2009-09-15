@@ -142,7 +142,7 @@ describe 'Eventful Tags' do
   
   describe "<r:date /> on an EventPage" do
     it "should return the start date for the event page" do
-      markup = "<r:events:date />"
+      markup = "<r:date />"
       
       expected = "#{pages(:normal_event).event_start.strftime '%A, %B %d, %Y'}"
 
@@ -152,7 +152,7 @@ describe 'Eventful Tags' do
   
   describe "<r:date /> on a regular Page" do
     it "should return the published or created date for the page" do
-      markup = "<r:events:date />"
+      markup = "<r:date />"
       
       expected = "#{pages(:home).published_at.strftime '%A, %B %d, %Y'}"
       
@@ -160,9 +160,9 @@ describe 'Eventful Tags' do
     end
   end
   
-  describe "<r:events:date format='%Y-%m-%d' />" do
+  describe "<r:date format='%Y-%m-%d' />" do
     it "should return the start date for the event page, formatted according to the 'format' attribute" do
-      markup = "<r:events:date format='%Y-%m-%d' />"
+      markup = "<r:date format='%Y-%m-%d' />"
       
       expected = "#{pages(:normal_event).event_start.strftime '%Y-%m-%d'}"
       
@@ -170,7 +170,13 @@ describe 'Eventful Tags' do
     end
   end
   
-  describe "<r:events:datetime for='event_end' />" do
-    it "should return the end date for the event page"
+  describe "<r:date for='event_end' />" do
+    it "should return the end date for the event page" do
+      markup = "<r:date for='event_end' />"
+      
+      expected = "#{pages(:normal_event).event_end.strftime '%A, %B %d, %Y'}"
+      
+      pages(:normal_event).should render(markup).as(expected)
+    end
   end
 end
