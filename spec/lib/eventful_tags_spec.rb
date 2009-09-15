@@ -140,43 +140,63 @@ describe 'Eventful Tags' do
     end
   end
   
-  describe "<r:events:date>" do
-    it "should return the start date for the event page"
+  describe "<r:date /> on an EventPage" do
+    it "should return the start date for the event page" do
+      markup = "<r:events:date />"
+      
+      expected = "#{pages(:normal_event).event_start.strftime '%A, %B %d, %Y'}"
+
+      pages(:normal_event).should render(markup).as(expected)
+    end
   end
   
-  describe "<r:events:datetime>" do
+  describe "<r:date /> on a regular Page" do
+    it "should return the published or created date for the page" do
+      markup = "<r:events:date />"
+      
+      expected = "#{pages(:home).published_at.strftime '%A, %B %d, %Y'}"
+      
+      pages(:home).should render(markup).as(expected)
+    end
+  end
+  
+  describe "<r:events:date format='%m %d, %Y' />" do
+    it "should return the start date for the event page, formatted according to the 'format' attribute"
+  end
+  
+  describe "<r:events:datetime />" do
     it "should return the start date and time for the event page"
   end
   
-  describe "<r:events:start>" do
+  describe "<r:events:start />" do
     it "should return the start date for the event page"
   end
   
-  describe "<r:events:start:date>" do
+  describe "<r:events:start:date />" do
     it "should return the start date for the event page"
   end
   
-  describe "<r:events:start:time>" do
+  describe "<r:events:start:time />" do
     it "should return the start time for the event page"
   end
   
-  describe "<r:events:start:datetime>" do
+  describe "<r:events:start:datetime />" do
     it "should return the start date and time for the event page"
   end
   
-  describe "<r:events:end>" do
+  describe "<r:events:end />" do
     it "should return the end date for the event page"
   end
   
-  describe "<r:events:end:date>" do
+  describe "<r:events:end:date />" do
     it "should return the end date for the event page"
   end
   
-  describe "<r:events:end:time>" do
+  describe "<r:events:end:time />" do
     it "should return the end time for the event page"
   end
   
-  describe "<r:events:end:datetime>" do
+  describe "<r:events:end:datetime />" do
     it "should return the end date and time for the event page"
   end
 end

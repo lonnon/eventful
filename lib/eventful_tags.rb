@@ -35,6 +35,45 @@ module EventfulTags
     result
   end
   
+  desc %{
+    Renders the date based on the current page. On a regular page, it
+    defaults to the date the page was published or created. On an event
+    page, it defaults to the start date of the event. The format
+    attribute uses the same formating codes used by the Ruby @strftime@
+    function. By default it's set to @%A, %B %d, %Y@. The @for@
+    attribute selects which date to render.  Valid options are
+    @published_at@, @created_at@, @updated_at@, @event_start@,
+    @event_end@, and @now@. @now@ renders the current date/time,
+    regardless of the page.
+
+    *Usage:*
+
+    <pre><code><r:date [format="%A, %B %d, %Y"] [for="published_at|event_start"]/></code></pre>
+  }
+  tag 'date' do |tag|
+    page = tag.locals.page
+    format = (tag.attr['format'] || '%A, %B %d, %Y')
+    time_attr = tag.attr['for']
+    date = if time_attr
+      case
+      when time_attr == 'now'
+        Time.now
+      when ['published_at', 'created_at', 'updated_at',
+            'event_start', 'event_end'].include?(time_attr)
+        page[time_attr]
+      else
+        raise TagError, "Invalid value for 'for' attribute."
+      end
+    else
+      if page.class_name == 'EventPage'
+        page.event_start
+      else
+        page.published_at || page.created_at
+      end
+    end
+    adjust_time(date).strftime(format)
+  end
+
 private
 
   def events_find_options(tag)
