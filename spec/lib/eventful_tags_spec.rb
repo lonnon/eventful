@@ -120,7 +120,14 @@ describe 'Eventful Tags' do
   end
   
   describe "<r:events:each from='date' to='before_date'>" do
-    it "should return a TagError exception"
+    it "should return a TagError exception" do
+      start_date = Time.now + 2.days
+      end_date   = Time.now
+      markup = "<r:events:each from='#{start_date}'" +
+               " to='#{end_date}'><r:title /></r:events:each>"
+      
+      pages(:event_list).should render(markup).with_error("'from' attribute of 'each' tag must come before 'to' attribute")
+    end
   end
   
   describe "<r:events:each past='true'>" do

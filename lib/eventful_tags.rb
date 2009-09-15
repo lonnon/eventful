@@ -62,6 +62,7 @@ private
     to = (attr[:to]) ? attr[:to].strip : nil
     time_condition = ""
     start_date = Time.now
+    end_date = nil
     if from
       begin
         Date.parse(from)
@@ -83,6 +84,9 @@ private
       rescue ArgumentError
         raise TagError.new("'to' attribute of 'each' tag must be set to a valid date")
       end
+    end
+    if end_date && start_date > end_date
+      raise TagError.new("'from' attribute of 'each' tag must come before 'to' attribute")
     end
     options[:conditions] << time_condition
     
