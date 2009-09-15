@@ -66,26 +66,39 @@ describe 'Eventful Tags' do
   
   describe "<r:events:each from='date' to='date'>" do
     it "should return event pages between the given dates" do
-      start_date = (Time.now + 2.days - 30.minutes).to_s(:db)
-      end_date =   (Time.now + 6.days + 30.minutes).to_s(:db)
-      
+      start_date = Time.now + 2.days - 30.minutes
+      end_date =   Time.now + 6.days + 30.minutes
       markup = "<r:events:each from='#{start_date}'" +
                " to='#{end_date}'><r:title /> </r:events:each>"
       
       expected = "Event 2 Event 3 Event 4 Event 5 Event 6 "
       
-      print "start_date: #{pages(:event_2).event_start.to_s(:db)}\n"
-      print "end_date:   #{pages(:event_6).event_start.to_s(:db)}\n"
       pages(:event_list).should render(markup).as(expected)
     end
   end
   
   describe "<r:events:each from='date'>" do
-    it "should return event pages starting from the given date"
+    it "should return event pages starting from the given date" do
+      start_date = Time.now + 3.days - 30.minutes
+      markup = "<r:events:each from='#{start_date}'" +
+               "><r:title /> </r:events:each>"
+      
+      expected = "Event 3 Event 4 Event 5 Event 6 All-day Event No End Specified Event "
+      
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:each to='date'>" do
-    it "should return event pages up to the given date"
+    it "should return event pages up to the given date" do
+      end_date = Time.now + 4.days + 30.minutes
+      markup = "<r:events:each to='#{end_date}'" +
+               "><r:title /> </r:events:each>"
+               
+      expected = "Normal Event Event 2 Event 3 Event 4 "
+      
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:each from='nonsense'" do
