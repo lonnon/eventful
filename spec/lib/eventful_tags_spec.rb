@@ -68,8 +68,22 @@ describe 'Eventful Tags' do
     it "should return event pages between the given dates"
   end
   
+  describe "<r:events:each from='date'>" do
+    it "should return event pages starting from the given date"
+  end
+  
+  describe "<r:events:each to='date'>" do
+    it "should return event pages up to the given date"
+  end
+  
   describe "<r:events:each past='true'>" do
-    it "should include event pages prior to current date and time"
+    it "should include event pages prior to current date and time" do
+      markup = "<r:events:each past='true'><r:title /> </r:events:each>"
+      
+      expected = "Old Event Normal Event Event 2 Event 3 Event 4 Event 5 Event 6 All-day Event No End Specified Event "
+      
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:date>" do

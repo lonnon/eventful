@@ -56,7 +56,13 @@ private
     end
     options[:order] = order_string
     
-    options[:conditions] = "class_name = 'EventPage' AND event_start >= '#{Time.now.to_s(:db)}'"
+    past = (attr[:past] || 'false').strip
+    if past == 'true'
+      time_condition = ""
+    else
+      time_condition = " AND event_start >= '#{Time.now.to_s(:db)}'"
+    end
+    options[:conditions] = "class_name = 'EventPage'" + time_condition
     
     [:limit, :offset].each do |symbol|
       if number = attr[symbol]
