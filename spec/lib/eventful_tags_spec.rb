@@ -65,7 +65,19 @@ describe 'Eventful Tags' do
   end
   
   describe "<r:events:each from='date' to='date'>" do
-    it "should return event pages between the given dates"
+    it "should return event pages between the given dates" do
+      start_date = (Time.now + 2.days - 30.minutes).to_s(:db)
+      end_date =   (Time.now + 6.days + 30.minutes).to_s(:db)
+      
+      markup = "<r:events:each from='#{start_date}'" +
+               " to='#{end_date}'><r:title /> </r:events:each>"
+      
+      expected = "Event 2 Event 3 Event 4 Event 5 Event 6 "
+      
+      print "start_date: #{pages(:event_2).event_start.to_s(:db)}\n"
+      print "end_date:   #{pages(:event_6).event_start.to_s(:db)}\n"
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:each from='date'>" do
@@ -74,6 +86,18 @@ describe 'Eventful Tags' do
   
   describe "<r:events:each to='date'>" do
     it "should return event pages up to the given date"
+  end
+  
+  describe "<r:events:each from='nonsense'" do
+    it "should return a TagError exception"
+  end
+  
+  describe "<r:events:each to='nonsense'" do
+    it "should return a TagError exception"
+  end
+  
+  describe "<r:events:each from='date' to='before_date'>" do
+    it "should return a TagError exception"
   end
   
   describe "<r:events:each past='true'>" do

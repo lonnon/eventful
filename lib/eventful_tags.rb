@@ -56,13 +56,33 @@ private
     end
     options[:order] = order_string
     
+    options[:conditions] = "class_name = 'EventPage'"
     past = (attr[:past] || 'false').strip
-    if past == 'true'
-      time_condition = ""
+    from = (attr[:from]) ? (attr[:from]).strip : nil
+    to = (attr[:to]) ? attr[:to].strip : nil
+    time_condition = ""
+    start_date = Time.now
+    if from
+      begin
+        start_date = Time.parse(from)
+        time_condition << " AND event_start >= '#{start_date.to_s(:db)}'"
+      rescue ArgumentError
+        raise TagError.new("'from' attribute of 'each' tag must be set to a valid date")
+      end
     else
-      time_condition = " AND event_start >= '#{Time.now.to_s(:db)}'"
+      if past != 'true'
+        time_condition << " AND event_start >= '#{start_date.to_s(:db)}'"
+      end
     end
-    options[:conditions] = "class_name = 'EventPage'" + time_condition
+    if to
+      begin
+        end_date = Time.parse(to)
+        time_condition << " AND event_start <= '#{end_date.to_s(:db)}'"
+      rescue ArgumentError
+        raise TagError.new("'to' attribute of 'each' tag must be set to a valid date")
+      end
+    end
+    options[:conditions] << time_condition
     
     [:limit, :offset].each do |symbol|
       if number = attr[symbol]
