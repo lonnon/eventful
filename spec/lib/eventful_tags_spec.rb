@@ -101,12 +101,22 @@ describe 'Eventful Tags' do
     end
   end
   
-  describe "<r:events:each from='nonsense'" do
-    it "should return a TagError exception"
+  describe "<r:events:each from='nonsense'>" do
+    it "should return a TagError exception" do
+      markup = "<r:events:each from='wibble'>" +
+               "<r:title /> </r:events:each>"
+               
+      pages(:event_list).should render(markup).with_error("'from' attribute of 'each' tag must be set to a valid date")
+    end
   end
   
-  describe "<r:events:each to='nonsense'" do
-    it "should return a TagError exception"
+  describe "<r:events:each to='nonsense'>" do
+    it "should return a TagError exception" do
+      markup = "<r:events:each to='wibble'>" +
+               "<r:title /> </r:events:each>"
+      
+      pages(:event_list).should render(markup).with_error("'to' attribute of 'each' tag must be set to a valid date")
+    end
   end
   
   describe "<r:events:each from='date' to='before_date'>" do

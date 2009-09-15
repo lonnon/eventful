@@ -64,6 +64,7 @@ private
     start_date = Time.now
     if from
       begin
+        Date.parse(from)
         start_date = Time.parse(from)
         time_condition << " AND event_start >= '#{start_date.to_s(:db)}'"
       rescue ArgumentError
@@ -76,6 +77,7 @@ private
     end
     if to
       begin
+        Date.parse(to)
         end_date = Time.parse(to)
         time_condition << " AND event_start <= '#{end_date.to_s(:db)}'"
       rescue ArgumentError
