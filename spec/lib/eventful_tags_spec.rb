@@ -34,7 +34,13 @@ describe 'Eventful Tags' do
   end
   
   describe "<r:events:each limit='3'>" do
-    it "should return the first three future event pages"
+    it "should return the first three future event pages" do
+      markup = "<r:events:each limit='3'><r:title /> </r:events:each>"
+      
+      expected = "Normal Event Event 2 Event 3 "
+      
+      pages(:event_list).should render(markup).as(expected)
+    end
   end
   
   describe "<r:events:each offset='2'>" do

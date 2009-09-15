@@ -58,6 +58,16 @@ private
     
     options[:conditions] = "class_name = 'EventPage' AND event_start >= '#{Time.now.to_s(:db)}'"
     
+    [:limit, :offset].each do |symbol|
+      if number = attr[symbol]
+        if number =~ /^\d{1,4}$/
+          options[symbol] = number.to_i
+        else
+          raise TagError.new("'#{symbol}' attribute of 'each' tag must be a positive number between 1 and 4 digits")
+        end
+      end
+    end
+    
     options
   end
 end
