@@ -23,6 +23,10 @@ class EventPagesDataset < Dataset::Base
       create_page "No End Specified Event",
                   :class_name  => 'EventPage',
                   :event_start => Time.now + 8.days
+      create_page "Draft Event",
+                  :class_name  => 'EventPage',
+                  :event_start => Time.now + 9.days,
+                  :status_id   => Status['Draft'].id
     end
   end
 end

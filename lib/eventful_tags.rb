@@ -15,8 +15,9 @@ module EventfulTags
     
     *Usage:*
     
-    <pre><code><r:events:each [limit="number"] [by="attribute"] [order="asc|desc"]
-     [status="draft|reviewed|published|hidden|all"]>
+    <pre><code><r:events:each [limit="number"] [by="attribute"]
+    [order="asc|desc"] [status="draft|reviewed|published|hidden|all"]
+    [past="false"] [from="start_date"] [to="end_date"]>
      ...
     </r:children:each>
     </code></pre>
@@ -128,6 +129,22 @@ private
       raise TagError.new("'from' attribute of 'each' tag must come before 'to' attribute")
     end
     options[:conditions] << time_condition
+
+####
+    status = (attr[:status] || ( dev?(tag.globals.page.request) ? 'all' : 'published')).downcase
+    stat_condition = ""
+    unless status == 'all'
+      stat = Status[status]
+      unless stat.nil?
+        stat_condition = " AND virtual = false AND status_id = #{stat.id}"
+      else
+        raise TagError.new(%{'status' attribute of 'each' tag must be set to a valid status})
+      end
+    else
+      stat_condition = " AND virtual = false"
+    end
+    options[:conditions] << stat_condition
+####
     
     [:limit, :offset].each do |symbol|
       if number = attr[symbol]
