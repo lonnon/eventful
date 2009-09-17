@@ -1,0 +1,3 @@
+class EventListPage < Page
+  
+end

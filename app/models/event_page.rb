@@ -1,6 +1,8 @@
 class EventPage < Page
   validate :must_have_chronological_event_dates,
            :must_have_start_date_if_end_date_exists
+  
+  after_save :set_defaults
 
 protected
   def must_have_chronological_event_dates
@@ -9,5 +11,17 @@ protected
   
   def must_have_start_date_if_end_date_exists
     errors.add(:event_start, "must exist if event end date is filled in") if (!event_end.nil? && event_start.nil?)
+  end
+
+private
+
+  def set_defaults
+    ['program', 'address', 'location'].each do |part_name|
+      parts.create(:name => part_name, :filter_id => '') unless parts.any? {
+        |part| part.name == part_name
+      }
+    end
+    event_layout = Layout.find_by_name('event')
+    update_attribute(:layout_id, event_layout.id) if event_layout && layout_id != event_layout.id
   end
 end

@@ -18,6 +18,7 @@ class EventfulExtension < Radiant::Extension
       :after => 'edit_extended_metadata')
     Admin::PagesController.send :include,
       Eventful::PagesControllerExtensions
+    Page.send :include, Eventful::PageExtensions
     Page.send :include, EventfulTags
   end
   
